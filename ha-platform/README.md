@@ -23,8 +23,8 @@ flowchart TD
   Client["HTTPS client"] --> ALB["Public ALB · two AZs"]
   ALB --> A["Private Fargate tasks · AZ A"]
   ALB --> B["Private Fargate tasks · AZ B"]
-  A --> NA["NAT gateway · AZ A"]
-  B --> NB["NAT gateway · AZ B"]
+  A --> Endpoints["Private ECR, CloudWatch and S3 endpoints"]
+  B --> Endpoints
   A --> Logs["KMS-encrypted CloudWatch logs"]
   B --> Logs
 ```
@@ -81,3 +81,7 @@ review endpoint/NAT costs and approved egress, and approve a retention policy. T
 provided modules are a baseline, not a claim those organizational controls exist.
 
 See [security decisions](docs/security-decisions.md) for scoped, expiring scanner exceptions and the restricted private-endpoint egress model.
+
+## Verified CI results
+
+[All four CI jobs passed](https://github.com/hdevops9-ops/aws-eks-platform/actions/runs/42451162317): provider-aware validation, six mocked Terraform behavior tests, four destructive-plan policy tests, Gitleaks, the scoped Trivy security gate, and Actionlint. See [validation evidence](docs/validation.md). AWS OIDC deployment and HA/state recovery remain sandbox acceptance tests, not claimed results.
