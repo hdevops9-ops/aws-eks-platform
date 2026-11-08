@@ -1,0 +1,3 @@
+# Replace both values after checking regional EKS support and your IAM roles.
+kubernetes_version     = "REPLACE_WITH_SUPPORTED_VERSION"
+administrator_role_arn = "arn:aws:iam::123456789012:role/PlatformAdministrator"
