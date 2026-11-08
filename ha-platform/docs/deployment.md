@@ -36,3 +36,5 @@ is a new reviewed plan; restoring old state is not an infrastructure rollback.
 
 The supplied CD workflow is not cloud-tested until you connect an AWS sandbox and
 run it. It does not modify AWS merely by being committed.
+
+Set `DEPLOYMENT_GUARDS_CONFIRMED=true` in the plan and apply environments only after reviewers, branch restrictions, and OIDC trust are verified. The workflow fails closed without it. This is an explicit setup acknowledgment, not an API check that protection rules exist. The examples in `policies/` scope state access and OIDC trust; they are not an automatically applied deployment-role policy.

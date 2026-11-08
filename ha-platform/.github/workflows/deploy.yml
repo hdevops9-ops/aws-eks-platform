@@ -29,6 +29,10 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.10.5
+      - name: Require deployment guard configuration
+        env:
+          CONFIRMED: ${{ vars.DEPLOYMENT_GUARDS_CONFIRMED }}
+        run: test "$CONFIRMED" = true
       - name: Re-run contracts before authenticated planning
         run: bash scripts/checks.sh
       - name: IaC security gate
@@ -97,6 +101,10 @@ jobs:
           role-to-assume: ${{ vars.APPLY_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
           role-session-name: terraform-apply-${{ github.run_id }}
+      - name: Require apply environment guard configuration
+        env:
+          CONFIRMED: ${{ vars.DEPLOYMENT_GUARDS_CONFIRMED }}
+        run: test "$CONFIRMED" = true
       - name: Apply the approved binary plan without replanning
         env:
           TARGET: ${{ inputs.target }}
