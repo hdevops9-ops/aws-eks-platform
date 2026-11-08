@@ -1,5 +1,7 @@
 # AWS EKS Platform
 
+[![Terraform validation](https://github.com/hdevops9-ops/aws-eks-platform/actions/workflows/validate.yml/badge.svg)](https://github.com/hdevops9-ops/aws-eks-platform/actions/workflows/validate.yml)
+
 A Terraform foundation for a shared Kubernetes platform: two availability zones,
 private worker subnets, a private EKS API, managed workers, access entries, and
 control-plane audit logs. Personal portfolio lab; not an Upstart or Citi deployment.
@@ -51,9 +53,10 @@ kubectl get nodes -o wide
 ## Validate and capture evidence
 
 The included CI workflow runs formatting and provider-aware validation without AWS apply.
-Local formatting passed and initialization succeeded. Local provider-aware validation
-was blocked by the environment’s restriction on provider Unix sockets; see the
-validation record in the portfolio bundle. CI has not run on GitHub yet. It does not
+GitHub Actions successfully completed formatting, initialization, and provider-aware
+validation. See [verified checks](docs/validation.md) for the run and exact commit.
+Local provider-aware validation was blocked by environment restrictions on Unix
+sockets; remote GitHub validation completed successfully. It does not
 prove resource creation or runtime behavior. Record the actual node distribution,
 private API connectivity, and a controlled worker drain in `docs/experiment.md`
 after a real deployment. No deployment has been performed by the project authoring session.
