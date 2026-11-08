@@ -8,3 +8,5 @@ variable "azs" {
   }
 }
 variable "log_kms_key_arn" { type = string }
+
+variable "region" { type = string }

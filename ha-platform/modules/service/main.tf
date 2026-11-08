@@ -39,9 +39,25 @@ resource "aws_vpc_security_group_ingress_rule" "from_alb" {
   ip_protocol                  = "tcp"
 }
 resource "aws_vpc_security_group_egress_rule" "task_https" {
+  security_group_id            = aws_security_group.task.id
+  description                  = "HTTPS only to private ECR and CloudWatch endpoints"
+  referenced_security_group_id = var.endpoint_security_group_id
+  from_port                    = 443
+  to_port                      = 443
+  ip_protocol                  = "tcp"
+}
+resource "aws_vpc_security_group_ingress_rule" "endpoint_from_task" {
+  security_group_id            = var.endpoint_security_group_id
+  referenced_security_group_id = aws_security_group.task.id
+  description                  = "Private AWS endpoints accessed by this workload"
+  from_port                    = 443
+  to_port                      = 443
+  ip_protocol                  = "tcp"
+}
+resource "aws_vpc_security_group_egress_rule" "task_s3" {
   security_group_id = aws_security_group.task.id
-  description       = "HTTPS image pulls, telemetry, and application dependencies through per-AZ NAT"
-  cidr_ipv4         = "0.0.0.0/0"
+  prefix_list_id    = var.s3_prefix_list_id
+  description       = "Private S3 gateway access for ECR image layers"
   from_port         = 443
   to_port           = 443
   ip_protocol       = "tcp"
@@ -57,6 +73,8 @@ resource "aws_s3_bucket_public_access_block" "logs" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
+# ALB access-log delivery supports SSE-S3; this exception applies only to its log destination.
+#trivy:ignore:AVD-AWS-0132:exp:2027-02-01
 resource "aws_s3_bucket_server_side_encryption_configuration" "logs" {
   bucket = aws_s3_bucket.alb_logs.id
   rule {
@@ -74,6 +92,8 @@ resource "aws_s3_bucket_policy" "logs" {
     { Sid = "DenyInsecureTransport", Effect = "Deny", Principal = "*", Action = "s3:*", Resource = [aws_s3_bucket.alb_logs.arn, "${aws_s3_bucket.alb_logs.arn}/*"], Condition = { Bool = { "aws:SecureTransport" = "false" } } }
   ] })
 }
+# Public web entrypoint is intentional; TLS, access logging, private targets, and deletion protection apply.
+#trivy:ignore:AVD-AWS-0053:exp:2027-02-01
 resource "aws_lb" "this" {
   name                       = var.name
   internal                   = false

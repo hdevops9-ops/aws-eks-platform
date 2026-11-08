@@ -33,3 +33,6 @@ variable "alarm_topic_arn" {
   description = "Existing SNS topic with confirmed responders."
   type        = string
 }
+
+variable "endpoint_security_group_id" { type = string }
+variable "s3_prefix_list_id" { type = string }

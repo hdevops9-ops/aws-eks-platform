@@ -1,17 +1,19 @@
 mock_provider "aws" {}
 variables {
-  name                = "test-ha"
-  region              = "us-east-1"
-  account_id          = "123456789012"
-  vpc_id              = "vpc-0123456789abcdef0"
-  public_subnet_ids   = ["subnet-0123456789abcdef0", "subnet-0123456789abcdef1"]
-  private_subnet_ids  = ["subnet-0123456789abcdef2", "subnet-0123456789abcdef3"]
-  log_kms_key_arn     = "arn:aws:kms:us-east-1:123456789012:key/00000000-0000-0000-0000-000000000000"
-  certificate_arn     = "arn:aws:acm:us-east-1:123456789012:certificate/00000000-0000-0000-0000-000000000000"
-  image               = "example.invalid/service@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-  log_bucket_name     = "test-ha-access-logs"
-  deletion_protection = true
-  alarm_topic_arn     = "arn:aws:sns:us-east-1:123456789012:test-alerts"
+  endpoint_security_group_id = "sg-0123456789abcdef0"
+  s3_prefix_list_id          = "pl-0123456789abcdef0"
+  name                       = "test-ha"
+  region                     = "us-east-1"
+  account_id                 = "123456789012"
+  vpc_id                     = "vpc-0123456789abcdef0"
+  public_subnet_ids          = ["subnet-0123456789abcdef0", "subnet-0123456789abcdef1"]
+  private_subnet_ids         = ["subnet-0123456789abcdef2", "subnet-0123456789abcdef3"]
+  log_kms_key_arn            = "arn:aws:kms:us-east-1:123456789012:key/00000000-0000-0000-0000-000000000000"
+  certificate_arn            = "arn:aws:acm:us-east-1:123456789012:certificate/00000000-0000-0000-0000-000000000000"
+  image                      = "example.invalid/service@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  log_bucket_name            = "test-ha-access-logs"
+  deletion_protection        = true
+  alarm_topic_arn            = "arn:aws:sns:us-east-1:123456789012:test-alerts"
 }
 run "service_contract" {
   command = plan

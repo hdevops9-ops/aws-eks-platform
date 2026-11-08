@@ -41,4 +41,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Block HIGH and CRITICAL IaC misconfigurations
+        working-directory: ha-platform
         run: docker run --rm -v "$PWD:/repo" aquasec/trivy:0.61.0 config --severity HIGH,CRITICAL --exit-code 1 /repo
+  workflow-syntax:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate CI and CD workflow syntax
+        working-directory: ha-platform
+        run: docker run --rm -v "$PWD:/repo" -w /repo rhysd/actionlint:1.7.7 -shellcheck= -pyflakes=

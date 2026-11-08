@@ -1,7 +1,7 @@
 # Terraform AWS HA Platform
 
 A modular, deployment-oriented AWS foundation for a stateless web service: HTTPS
-ALB, private Fargate tasks across two AZs, per-AZ NAT, encrypted logs, alarms, and
+ALB, private Fargate tasks across two AZs, private AWS endpoints, per-AZ NAT, encrypted logs, alarms, and
 isolated remote Terraform state. It includes a DevSecOps CI pipeline and a saved-plan
 CD workflow. This is a personal engineering project, not an employer system.
 
@@ -77,5 +77,7 @@ Before a production deployment: use separate AWS accounts, configure restrictive
 OIDC roles and reviewers, pin Actions/images by verified digest/SHA, establish
 WAF/rate limits where required, add application SLO and synthetic monitoring,
 confirm notification delivery, run task/AZ failure and state-restore drills,
-review NAT/egress requirements and costs, and approve a retention policy. The
+review endpoint/NAT costs and approved egress, and approve a retention policy. The
 provided modules are a baseline, not a claim those organizational controls exist.
+
+See [security decisions](docs/security-decisions.md) for scoped, expiring scanner exceptions and the restricted private-endpoint egress model.
