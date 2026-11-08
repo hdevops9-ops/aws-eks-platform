@@ -1,0 +1,9 @@
+tests/platform.tftest.hcl... in progress
+  run "lab_topology"... pass
+  run "production_topology"... pass
+  run "reject_unknown_environment"... pass
+  run "reject_root_administrator"... pass
+tests/platform.tftest.hcl... tearing down
+tests/platform.tftest.hcl... pass
+
+Success! 4 passed, 0 failed.

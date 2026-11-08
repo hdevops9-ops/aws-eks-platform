@@ -77,3 +77,7 @@ load balancers, EBS volumes, NAT gateways, or log groups remain unexpectedly.
 
 Add remote state, test the deployment in a sandbox, implement workload identity,
 and document node replacement and cluster upgrade procedures with observed results.
+
+## Executed Terraform behavior tests
+
+[Successful behavior run](https://github.com/hdevops9-ops/aws-eks-platform/actions/runs/42449821763) passed four native Terraform tests: lab subnet/NAT topology, production per-AZ NAT topology, invalid environment rejection, and root-ARN administrator rejection. [Evidence](docs/runtime-validation.md). Run `terraform test` inside `terraform/` to reproduce. AWS providers are mocked: these tests do not create AWS resources or prove EKS runtime availability.
