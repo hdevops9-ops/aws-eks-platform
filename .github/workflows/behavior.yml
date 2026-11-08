@@ -1,0 +1,27 @@
+name: Terraform behavioral tests (mocked AWS)
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+      - run: terraform init -backend=false
+      - name: Test topology and input rejection without AWS calls
+        run: |
+          set -o pipefail
+          terraform test -no-color | tee terraform-test-results.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: terraform-behavior-evidence
+          path: terraform/terraform-test-results.txt
+          retention-days: 14
